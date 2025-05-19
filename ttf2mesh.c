@@ -50,6 +50,7 @@
 #   define TTF_MACOS
 #   define PATH_SEP '/'
 #   include <dirent.h>
+#   include <limits.h> 
 #elif defined(__WINNT__) || defined(_WIN32) || defined(_WIN64)
 #   define TTF_WINDOWS
 #   define _CRT_SECURE_NO_WARNINGS
