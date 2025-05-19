@@ -46,6 +46,10 @@
 #   define _DEFAULT_SOURCE 1
 #   define PATH_SEP '/'
 #   include <dirent.h>
+#elif defined(__APPLE__) || defined(MACOS)
+#   define TTF_MACOS
+#   define PATH_SEP '/'
+#   include <dirent.h>
 #elif defined(__WINNT__) || defined(_WIN32) || defined(_WIN64)
 #   define TTF_WINDOWS
 #   define _CRT_SECURE_NO_WARNINGS
@@ -87,6 +91,11 @@
     "/usr/share/fonts",       \
     "/usr/local/share/fonts", \
     "~/.fonts"
+
+#define MACOS_FONTS_PATH      \
+    "/System/Library/Fonts/", \
+    "/Library/Fonts/",        \
+    "~/Library/Fonts/"
 
 #define WINDOWS_FONTS_PATH    \
     "C:\\Windows\\Fonts"
@@ -1877,7 +1886,7 @@ static bool check_by_mask(const char *file_name, const char *mask)
     }
 }
 
-#if defined(TTF_LINUX) || defined(TTF_ANDROID)
+#if defined(TTF_LINUX) || defined(TTF_MACOS) || defined(TTF_ANDROID)
 static ttf_t **load_fonts_from_dir(ttf_t **list, int *count, int *cap, const char *dir, char *fullpath, int deepmax, const char *mask)
 {
     DIR *d;
@@ -2047,6 +2056,8 @@ ttf_t **ttf_list_system_fonts(const char *mask)
         ANDROID_FONTS_PATH
 #elif defined(TTF_LINUX)
         LINUX_FONTS_PATH
+#elif defined(TTF_MACOS)
+        MACOS_FONTS_PATH
 #elif defined(TTF_WINDOWS)
         WINDOWS_FONTS_PATH
 #endif
